@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDMusic - Settings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Settings Styles */
+        .settings-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .settings-header {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-left: 10px;
+        }
+        
+        .section-header {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 20px 0 15px 10px;
+            color: #fff;
+        }
+        
+        .settings-item {
+            display: flex;
+            align-items: center;
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .settings-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background-color: #2a2a2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .icon-red {
+            color: #ff5757;
+        }
+        
+        .icon-blue {
+            color: #4285F4;
+        }
+        
+        .icon-green {
+            color: #34A853;
+        }
+        
+        .settings-content {
+            flex-grow: 1;
+        }
+        
+        .settings-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .settings-description {
+            font-size: 14px;
+            color: #999;
+            margin: 0;
+        }
+        
+        .settings-action {
+            margin-left: 10px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #ff5757;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .language-select {
+            color: #ff5757;
+            font-weight: 500;
+        }
+        
+        .version-info {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-icon {
+            color: #ff5757;
+            margin-right: 5px;
+        }
+        
+        .error-message {
+            color: #ff5757;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff4d6d;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e53950;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top border-bottom border-dark">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <a href="index.html" class="text-white me-3">
+                    <i class="bi bi-chevron-left fs-4"></i>
+                </a>
+                <span class="fs-5 fw-medium">Settings</span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Settings Content -->
+    <div class="container-fluid py-4">
+        <div class="settings-container">
+            <!-- General Section -->
+            <div class="section-header">General</div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-red">
+                    <i class="bi bi-arrow-left-right fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">Set up new device</div>
+                    <div class="settings-description">Transfer songs and playlists between two devices</div>
+                </div>
+            </div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-blue">
+                    <i class="bi bi-google fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">Backup & Restore</div>
+                    <div class="error-message">
+                        <i class="bi bi-exclamation-circle-fill alert-icon"></i>
+                        Internet unavailable, please try again later
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-red">
+                    <i class="bi bi-music-note-list fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">Allow background playback</div>
+                    <div class="settings-description">Ensure smooth music playback in the background</div>
+                </div>
+            </div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-red">
+                    <i class="bi bi-pause-circle fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">Pause on detach</div>
+                    <div class="settings-description">Pause playing when headphones are disconnected</div>
+                </div>
+                <div class="settings-action">
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-red">
+                    <i class="bi bi-globe fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">Language</div>
+                </div>
+                <div class="settings-action language-select">
+                    English <i class="bi bi-chevron-down"></i>
+                </div>
+            </div>
+            
+            <!-- Help Section -->
+            <div class="section-header">Help</div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-red">
+                    <i class="bi bi-question-circle fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">FAQ</div>
+                </div>
+            </div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-red">
+                    <i class="bi bi-chat-left-text fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">Feedback</div>
+                </div>
+            </div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-red">
+                    <i class="bi bi-hand-thumbs-up fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">Rate us</div>
+                </div>
+            </div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-red">
+                    <i class="bi bi-shield-check fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">Privacy policy</div>
+                </div>
+            </div>
+            
+            <div class="settings-item">
+                <div class="settings-icon icon-red">
+                    <i class="bi bi-file-text fs-5"></i>
+                </div>
+                <div class="settings-content">
+                    <div class="settings-title">Terms of use</div>
+                </div>
+            </div>
+            
+            <!-- Version Info -->
+            <div class="version-info">
+                Version: 1.14.0-39-2ac387f
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
