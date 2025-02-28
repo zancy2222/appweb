@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDMusic - Playlist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Playlist Container */
+        .playlist-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(255, 87, 87, 0.2);
+        }
+
+        /* Song List */
+        .song-item {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .song-item h6 {
+            margin: 0;
+            color: #fff;
+        }
+
+        .song-item small {
+            color: #bbb;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff4d6d;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-white">
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top border-bottom border-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <span class="text-danger">DD</span><span class="text-white">MUSIC</span>
+            </a>
+            <div class="d-flex gap-3 align-items-center">
+                <input type="text" id="searchInput" class="form-control bg-white text-black" placeholder="Search songs...">
+                <button class="btn btn-dark rounded-circle" data-bs-toggle="tooltip" title="Settings">
+                    <i class="bi bi-gear"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+        <!-- Navigation Pills -->
+        <div class="d-flex gap-2 mb-4 overflow-auto px-2 pb-2">
+            <a href="index.html" class="btn btn-dark rounded-pill px-4 fw-semibold">For You</a>
+            <a href="songs.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Songs</a>
+            <a href="artists.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Artists</a>
+            <a href="playlist.html" class="btn btn-danger rounded-pill px-4 fw-semibold">Playlist</a>
+                        <a href="video.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Videos</a>
+
+            <a href="album.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Albums</a>
+        </div>
+
+        <!-- Playlist Container -->
+        <div class="playlist-container">
+            <h3 class="fw-bold text-white mb-3">Your Playlist</h3>
+
+            <!-- Add Song Form -->
+            <div class="d-flex gap-2 mb-3">
+                <input type="text" id="songTitle" class="form-control bg-light text-dark" placeholder="Song Title">
+                <input type="text" id="songArtist" class="form-control bg-light text-dark" placeholder="Artist">
+                <button id="addSongBtn" class="btn btn-outline-danger">Add</button>
+            </div>
+
+            <!-- Playlist Songs -->
+            <div id="playlist" class="list-group">
+                <!-- Playlist Songs will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+// Array to store playlist songs
+let playlistSongs = JSON.parse(localStorage.getItem("playlist")) || [];
+
+const songTitleInput = document.getElementById("songTitle");
+const songArtistInput = document.getElementById("songArtist");
+const addSongBtn = document.getElementById("addSongBtn");
+const playlistDiv = document.getElementById("playlist");
+
+// Function to save playlist to localStorage
+function savePlaylist() {
+    localStorage.setItem("playlist", JSON.stringify(playlistSongs));
+}
+
+// Function to render playlist songs
+function renderPlaylist() {
+    playlistDiv.innerHTML = "";
+
+    if (playlistSongs.length === 0) {
+        playlistDiv.innerHTML = "<p class='text-center text-white-50'>No songs in playlist.</p>";
+        return;
+    }
+
+    playlistSongs.forEach((song, index) => {
+        playlistDiv.innerHTML += `
+            <div class="song-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h6>${song.title}</h6>
+                    <small>${song.artist}</small>
+                </div>
+                <button class="btn btn-outline-danger btn-sm remove-btn" data-index="${index}">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `;
+    });
+
+    addRemoveListeners();
+}
+
+// Function to add remove functionality
+function addRemoveListeners() {
+    document.querySelectorAll(".remove-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+            const index = this.getAttribute("data-index");
+            playlistSongs.splice(index, 1);
+            savePlaylist(); // Save updated playlist
+            renderPlaylist();
+        });
+    });
+}
+
+// Add song to playlist
+addSongBtn.addEventListener("click", function () {
+    const title = songTitleInput.value.trim();
+    const artist = songArtistInput.value.trim();
+
+    if (title === "" || artist === "") {
+        alert("Please enter both song title and artist.");
+        return;
+    }
+
+    playlistSongs.push({ title, artist });
+    savePlaylist(); // Save updated playlist
+    songTitleInput.value = "";
+    songArtistInput.value = "";
+    renderPlaylist();
+});
+
+// Load playlist on page load
+renderPlaylist();
+
+    </script>
+</body>
+
+</html>

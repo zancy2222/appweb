@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDMusic - Videos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navigation Pills */
+        .btn.rounded-pill {
+            transition: all 0.3s ease;
+        }
+
+        .btn.rounded-pill:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(255, 87, 87, 0.3);
+        }
+
+        /* Video Cards */
+        .card {
+            border: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 87, 87, 0.2);
+        }
+        .card-img-top {
+            width: 100%; /* Ensures the image fits the card's width */
+            height: 500px; /* Set a fixed height */
+            object-fit: cover; /* Ensures the image maintains aspect ratio while covering the area */
+            border-radius: 8px; /* Optional: adds rounded corners */
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff4d6d;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e53950;
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-white">
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top border-bottom border-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <span class="text-danger">DD</span><span class="text-white">MUSIC</span>
+            </a>
+            <div class="d-flex gap-3 align-items-center">
+                <input type="text" id="searchInput" class="form-control bg-white text-black" placeholder="Search videos...">
+                <button class="btn btn-dark rounded-circle" data-bs-toggle="tooltip" title="Settings">
+                    <i class="bi bi-gear"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+        <!-- Navigation Pills -->
+        <div class="d-flex gap-2 mb-4 overflow-auto px-2 pb-2">
+            <a href="index.html" class="btn btn-dark rounded-pill px-4 fw-semibold">For You</a>
+            <a href="songs.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Songs</a>
+            <a href="artists.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Artists</a>
+            <a href="playlist.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Playlist</a>
+            <a href="video.html" class="btn btn-danger rounded-pill px-4 fw-semibold">Videos</a>
+            <a href="album.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Albums</a>
+        </div>
+
+        <!-- Page Title -->
+        <h3 class="fw-bold text-white mb-3">Music Videos</h3>
+
+        <!-- Video List -->
+        <div id="videoList" class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Videos will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const videos = [
+            { title: "Blinding Lights", artist: "The Weeknd", src: "videos/TheWeeknd-BlindingLights.mp4", thumbnail: "twe.jpg" },
+            { title: "Shape of You", artist: "Ed Sheeran", src: "videos/EdSheeran-ShapeOfYou.mp4", thumbnail: "Ed_Sheeran-6886_(cropped).jpg" },
+            { title: "Save Your Tears", artist: "The Weeknd", src: "videos/TheWeeknd-SaveYourTears.mp4", thumbnail: "twe.jpg" },
+            { title: "Levitating", artist: "Dua Lipa", src: "videos/DuaLipa-Levitating.mp4", thumbnail: "dua.jpg" },
+            { title: "Señorita", artist: "Shawn Mendes", src: "videos/ShawnMendes-Senorita.mp4", thumbnail: "shawn.jpg" },
+            { title: "Memories", artist: "Maroon 5", src: "videos/Maroon5-Memories.mp4", thumbnail: "m5.jpg" }
+        ];
+
+        const videoList = document.getElementById("videoList");
+        const searchInput = document.getElementById("searchInput");
+
+        // Function to render videos
+        function renderVideos(videoArray = videos) {
+            videoList.innerHTML = "";
+            videoArray.forEach((video, index) => {
+                videoList.innerHTML += `
+                    <div class="col">
+                        <div class="card bg-black text-white shadow">
+                            <img src="${video.thumbnail}" class="card-img-top" alt="${video.title}">
+                            <div class="card-body">
+                                <h5 class="card-title">${video.title}</h5>
+                                <p class="card-text text-white-50">${video.artist}</p>
+                                <button class="btn btn-outline-danger play-video-btn w-100" data-index="${index}">
+                                    <i class="bi bi-play-fill me-2"></i>Play Video
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            addPlayButtonListeners();
+        }
+
+        // Search functionality
+        searchInput.addEventListener("input", function () {
+            const query = this.value.toLowerCase();
+            const filteredVideos = videos.filter(video =>
+                video.title.toLowerCase().includes(query) ||
+                video.artist.toLowerCase().includes(query)
+            );
+            renderVideos(filteredVideos);
+        });
+
+        // Add event listeners to play buttons
+        function addPlayButtonListeners() {
+            document.querySelectorAll('.play-video-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    let index = this.getAttribute("data-index");
+                    openVideoModal(videos[index]);
+                });
+            });
+        }
+
+        // Function to open video modal
+        function openVideoModal(video) {
+            const modalHTML = `
+                <div class="modal fade" id="videoModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content bg-black text-white">
+                            <div class="modal-header border-0">
+                                <h5 class="modal-title">${video.title} - ${video.artist}</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <video controls class="w-100">
+                                    <source src="${video.src}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML("beforeend", modalHTML);
+            let modal = new bootstrap.Modal(document.getElementById("videoModal"));
+            modal.show();
+            document.getElementById("videoModal").addEventListener("hidden.bs.modal", function () {
+                this.remove();
+            });
+        }
+
+        // Initial render
+        renderVideos();
+    </script>
+
+</body>
+</html>

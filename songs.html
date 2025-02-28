@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDMusic - Songs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navigation Pills */
+        .btn.rounded-pill {
+            transition: all 0.3s ease;
+        }
+
+        .btn.rounded-pill:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(255, 87, 87, 0.3);
+        }
+
+        /* Card Styles */
+        .card {
+            border: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 87, 87, 0.2);
+        }
+
+        /* Action Buttons */
+        .btn-outline-danger {
+            border-color: #ff4d6d;
+            color: #ff4d6d;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 87, 87, 0.4);
+        }
+
+        /* Play & Shuffle Buttons */
+        .btn-dark.rounded-circle {
+            transition: all 0.3s ease;
+        }
+
+        .btn-dark.rounded-circle:hover {
+            background-color: rgba(255, 87, 87, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff4d6d;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e53950;
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-white">
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top border-bottom border-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <span class="text-danger">DD</span><span class="text-white">MUSIC</span>
+            </a>
+            <div class="d-flex gap-3 align-items-center">
+                <input type="text" id="searchInput" class="form-control bg-white text-black" placeholder="Search songs...">
+                <button class="btn btn-dark rounded-circle" data-bs-toggle="tooltip" title="Settings">
+                    <i class="bi bi-gear"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+        <!-- Navigation Pills -->
+        <div class="d-flex gap-2 mb-4 overflow-auto px-2 pb-2">
+            <a href="index.html" class="btn btn-dark rounded-pill px-4 fw-semibold">For You</a>
+            <a href="songs.html" class="btn btn-danger rounded-pill px-4 fw-semibold">Songs</a>
+            <a href="artists.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Artists</a>
+            <a href="playlist.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Playlist</a>
+            <a href="video.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Videos</a>
+            <a href="album.html" class="btn btn-dark rounded-pill px-4 fw-semibold">Albums</a>
+        </div>
+
+        <!-- Page Title -->
+        <h3 class="fw-bold text-white mb-3">All Songs</h3>
+
+        <!-- Action Buttons -->
+        <div class="d-flex gap-3 mb-4">
+            <button id="shuffleBtn" class="btn btn-outline-danger rounded-pill px-4 fw-semibold shadow-sm">
+                <i class="bi bi-shuffle me-2"></i>Shuffle
+            </button>
+            <button id="playAllBtn" class="btn btn-outline-danger rounded-pill px-4 fw-semibold shadow-sm">
+                <i class="bi bi-play-fill me-2"></i>Play All
+            </button>
+        </div>
+
+        <!-- Songs List -->
+        <div id="songsList" class="list-group">
+            <!-- Songs will be loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const songs = [
+            { title: "Blinding Lights", artist: "The Weeknd", src: "songs/The Weeknd - Blinding Lights Official Video.mp3" },
+            { title: "Shape of You", artist: "Ed Sheeran", src: "songs/Ed Sheeran - Shape of You Official Music Video.mp3" },
+            { title: "Save Your Tears", artist: "The Weeknd", src: "songs/The Weeknd - Save Your Tears Official Music Video.mp3" },
+            { title: "Levitating", artist: "Dua Lipa", src: "songs/Dua Lipa - Levitating Featuring DaBaby Official Music Video.mp33" },
+            { title: "Senorita", artist: "Shawn Mendes", src: "songs/Shawn Mendes Camila Cabello - Seorita.mp3" },
+            { title: "Someone Like You", artist: "Adele", src: "songs/Adele - Someone Like You Official Music Video.mp3" },
+            { title: "Memories", artist: "Maroon 5", src: "songs/Maroon 5 - Memories Official Video.mp3" },
+            { title: "Closer", artist: "The Chainsmokers", src: "songs/The Chainsmokers - Closer Lyric ft Halsey.mp3" },
+            { title: "Stay", artist: "The Kid LAROI, Justin Bieber", src: "songs/The Kid LAROI Justin Bieber - STAY Official Video.mp3" },
+            { title: "Bad Habits", artist: "Ed Sheeran", src: "songs/Ed Sheeran - Bad Habits Official Video.mp3" }
+        ];
+    
+        const songsList = document.getElementById("songsList");
+        const searchInput = document.getElementById("searchInput");
+        const playAllBtn = document.getElementById("playAllBtn");
+        const shuffleBtn = document.getElementById("shuffleBtn");
+        
+        let isPlayingAll = false;
+        let playAllIndex = 0;
+        
+        // Function to render songs
+        function renderSongs(songArray = songs) {
+            songsList.innerHTML = "";
+            songArray.forEach((song, index) => {
+                songsList.innerHTML += `
+                    <div class="list-group-item bg-black text-white d-flex align-items-center p-3 border-bottom">
+                        <div class="bg-dark rounded-3 p-3 me-3 shadow">
+                            <i class="bi bi-music-note text-danger fs-3"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="m-0 fw-semibold">${song.title}</h6>
+                            <small class="text-white-50">${song.artist}</small>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-dark rounded-circle shadow play-btn" data-index="${index}">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+ 
+                        </div>
+                        <audio class="audio-player d-none">
+                            <source src="${song.src}" type="audio/mpeg">
+                        </audio>
+                    </div>
+                `;
+            });
+        
+            addPlayButtonListeners();
+        }
+        
+        // Search functionality
+        searchInput.addEventListener("input", function () {
+            const query = this.value.toLowerCase();
+            const filteredSongs = songs.filter(song =>
+                song.title.toLowerCase().includes(query) ||
+                song.artist.toLowerCase().includes(query)
+            );
+            renderSongs(filteredSongs);
+        });
+        
+        // Play button functionality for individual songs
+        function addPlayButtonListeners() {
+            document.querySelectorAll('.play-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    let audio = this.closest('.list-group-item').querySelector('.audio-player');
+        
+                    // Pause all other audios
+                    document.querySelectorAll('.audio-player').forEach(a => {
+                        if (a !== audio) a.pause();
+                    });
+        
+                    if (audio.paused) {
+                        audio.play();
+                        this.innerHTML = '<i class="bi bi-pause-fill"></i>';
+                    } else {
+                        audio.pause();
+                        this.innerHTML = '<i class="bi bi-play-fill"></i>';
+                    }
+        
+                    audio.onended = () => {
+                        this.innerHTML = '<i class="bi bi-play-fill"></i>';
+                    };
+                });
+            });
+        }
+        
+        // Play All Songs Sequentially
+        playAllBtn.addEventListener("click", function () {
+            if (isPlayingAll) {
+                stopAllSongs();
+                isPlayingAll = false;
+                playAllBtn.innerHTML = `<i class="bi bi-play-fill me-2"></i>Play All`;
+                return;
+            }
+        
+            isPlayingAll = true;
+            playAllIndex = 0;
+            playNextSong();
+        
+            playAllBtn.innerHTML = `<i class="bi bi-pause-fill me-2"></i>Stop All`;
+        });
+        
+        // Function to stop all playing songs
+        function stopAllSongs() {
+            document.querySelectorAll('.audio-player').forEach(audio => audio.pause());
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.innerHTML = '<i class="bi bi-play-fill"></i>';
+            });
+        }
+        
+        // Function to play next song
+        function playNextSong() {
+            if (!isPlayingAll || playAllIndex >= songs.length) {
+                isPlayingAll = false;
+                playAllBtn.innerHTML = `<i class="bi bi-play-fill me-2"></i>Play All`;
+                return;
+            }
+        
+            let audioElements = document.querySelectorAll('.audio-player');
+            let playButtons = document.querySelectorAll('.play-btn');
+        
+            stopAllSongs();
+            let currentAudio = audioElements[playAllIndex];
+            let currentPlayBtn = playButtons[playAllIndex];
+        
+            if (currentAudio) {
+                currentAudio.play();
+                currentPlayBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+                currentAudio.onended = () => {
+                    currentPlayBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
+                    playAllIndex++;
+                    playNextSong();
+                };
+            }
+        }
+        
+        // Shuffle and Play
+        shuffleBtn.addEventListener("click", function () {
+            let shuffledSongs = [...songs].sort(() => Math.random() - 0.5);
+            renderSongs(shuffledSongs);
+            isPlayingAll = true;
+            playAllIndex = 0;
+            playNextSong();
+        });
+        
+        // Initial render
+        renderSongs();
+        
+    </script>
+    
+</body>
+</html>
